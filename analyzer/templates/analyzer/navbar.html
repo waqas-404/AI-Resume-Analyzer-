@@ -1,0 +1,101 @@
+<nav class="navbar">
+    <div class="nav-left">
+        
+
+        <a href="/" class="nav-link">Home</a>
+        <a href="#footer-about" class="nav-link">About</a>
+        <a href="/history/" class="nav-link">History</a>
+        <a href="#footer-contact" class="nav-link">Contact Us</a>
+    </div>
+
+    <div class="nav-right">
+        <a href="/login/" class="nav-login">
+            <span class="login-icon">🔐</span> Login
+        </a>
+    </div>
+</nav>
+
+<style>
+    .navbar {
+        width: 55%;
+        padding: 18px 10px;
+        background: transparent
+        backdrop-filter: blur(10px);
+        
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 34px;
+    }
+
+    .nav-logo {
+        font-size: 20px;
+        font-weight: 700;
+        color: #667eea;
+        text-decoration: none;
+        letter-spacing: -0.2px;
+    }
+
+    .nav-link {
+        color: #a0aec0;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #ffffff;
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: right;
+    }
+
+    .nav-login {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 8px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .nav-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(102, 126, 234, 0.4);
+    }
+
+    .login-icon {
+        font-size: 18px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            padding: 14px 20px;
+        }
+        .nav-left {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+        }
+        .nav-logo {
+            margin-bottom: 8px;
+        }
+    }
+</style>

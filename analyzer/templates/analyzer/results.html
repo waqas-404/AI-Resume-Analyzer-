@@ -1,0 +1,249 @@
+{% extends 'analyzer/base.html' %}
+
+{% block title %}Analysis Results - AI Resume Analyzer{% endblock %}
+
+{% block extra_css %}
+<style>
+    .score-display {
+        text-align: center;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 12px;
+        margin: 24px 0;
+    }
+
+    .score-value {
+        font-size: 72px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+    }
+
+    .score-label {
+        color: #a0aec0;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        height: 40px;
+        background: rgba(26, 35, 50, 0.6);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        margin: 24px 0;
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .progress-bar {
+        height: 100%;
+        border-radius: 20px;
+        transition: width 1s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 12px;
+        font-weight: 700;
+        color: white;
+    }
+
+    .progress-low {
+        background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    .progress-good {
+        background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+    }
+
+    .progress-excellent {
+        background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 16px 0;
+    }
+
+    .badge-low {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        border: 2px solid #ef4444;
+    }
+
+    .badge-good {
+        background: rgba(251, 191, 36, 0.2);
+        color: #fbbf24;
+        border: 2px solid #fbbf24;
+    }
+
+    .badge-excellent {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        border: 2px solid #10b981;
+    }
+
+    .recommendation-box {
+        background: rgba(102, 126, 234, 0.1);
+        border-left: 4px solid #667eea;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        color: #e2e8f0;
+    }
+
+    .keyword-tag {
+        display: inline-block;
+        background: rgba(102, 126, 234, 0.2);
+        color: #667eea;
+        padding: 6px 12px;
+        border-radius: 6px;
+        margin: 4px;
+        font-size: 14px;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .missing-keyword-tag {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(102, 126, 234, 0.2);
+        color: #667eea;
+        font-weight: 600;
+        padding: 12px 32px;
+        border-radius: 12px;
+        border: 2px solid #667eea;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .btn-secondary:hover {
+        background: rgba(102, 126, 234, 0.3);
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-title">📊 Analysis Results</div>
+    <div class="hero-subtitle">
+        Here's how well your resume matches the job description
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-title">
+        <span>🎯</span> Match Score
+    </div>
+    
+    <div class="score-display">
+        <div class="score-value">{{ analysis.similarity_score|floatformat:1 }}%</div>
+        <div class="score-label">Overall Compatibility</div>
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar progress-{{ match_level }}" 
+             style="width: {{ analysis.similarity_score }}%;">
+            {{ analysis.similarity_score|floatformat:1 }}%
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <span class="badge badge-{{ match_level }}">
+            {% if match_level == 'low' %}🔴{% elif match_level == 'good' %}🟡{% else %}🟢{% endif %}
+            {{ match_text }}
+        </span>
+    </div>
+
+    <div class="recommendation-box">
+        <strong style="color: #667eea; font-size: 16px;">💡 Recommendation:</strong><br><br>
+        {{ recommendation }}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-title">
+        <span>🔑</span> Key Skills & Keywords Analysis
+    </div>
+    
+    <div style="margin-bottom: 24px;">
+        <h3 style="color: #a0aec0; font-size: 16px; margin-bottom: 12px;">
+            Top Job Description Keywords:
+        </h3>
+        <div>
+            {% for keyword in analysis.job_keywords %}
+                <span class="keyword-tag">{{ keyword }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="margin-bottom: 24px;">
+        <h3 style="color: #a0aec0; font-size: 16px; margin-bottom: 12px;">
+            Keywords Present in Your Resume:
+        </h3>
+        <div>
+            {% if analysis.resume_keywords %}
+                {% for keyword in analysis.resume_keywords %}
+                    <span class="keyword-tag">{{ keyword }}</span>
+                {% endfor %}
+            {% else %}
+                <p style="color: #6b7280;">None of the key job keywords found in your resume</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if analysis.missing_keywords %}
+    <div style="margin-bottom: 24px;">
+        <h3 style="color: #ef4444; font-size: 16px; margin-bottom: 12px;">
+            ⚠️ Missing Keywords / Skills to Include:
+        </h3>
+        <div>
+            {% for keyword in analysis.missing_keywords %}
+                <span class="keyword-tag missing-keyword-tag">{{ keyword }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-success">
+        ✅ Your resume includes all major job keywords!
+    </div>
+    {% endif %}
+</div>
+
+<div style="text-align: center; margin-top: 32px;">
+    <a href="{% url 'home' %}" class="btn-secondary" style="margin-right: 16px;">
+        ← Analyze Another Resume
+    </a>
+    <a href="{% url 'history' %}" class="btn-secondary">
+        📜 View History
+    </a>
+</div>
+
+<script>
+    // Animate progress bar on page load
+    window.addEventListener('load', function() {
+        const progressBar = document.querySelector('.progress-bar');
+        const targetWidth = progressBar.style.width;
+        progressBar.style.width = '0%';
+        
+        setTimeout(() => {
+            progressBar.style.width = targetWidth;
+        }, 100);
+    });
+</script>
+{% endblock %}

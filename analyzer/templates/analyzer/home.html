@@ -1,0 +1,84 @@
+{% extends 'analyzer/base.html' %}
+
+{% block title %}AI Resume Analyzer - Home{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-title">Smart Resume Matching with AI-Powered Analysis</div>
+    <div class="hero-subtitle">
+        Upload your resume and job description to get instant insights on how well they match. 
+        Our advanced AI uses TF-IDF and Cosine Similarity algorithms to provide accurate compatibility scores.
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="grid grid-2">
+        <div class="card">
+            <div class="card-title">
+                <span>📄</span> Upload Resume
+            </div>
+            <div class="form-group">
+                <label class="form-label">Choose your resume PDF file</label>
+                {{ form.resume }}
+                {% if form.resume.errors %}
+                    <div class="alert alert-error" style="margin-top: 10px;">
+                        {{ form.resume.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>💼</span> Job Description
+            </div>
+            <div class="form-group">
+                <label class="form-label">Paste the job description here</label>
+                {{ form.job_description }}
+                {% if form.job_description.errors %}
+                    <div class="alert alert-error" style="margin-top: 10px;">
+                        {{ form.job_description.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn-primary">
+        🚀 Analyze Match
+    </button>
+</form>
+
+<div class="grid grid-2" style="margin-top: 32px; gap: 24px;">
+    
+    <div class="card">
+        <div class="card-title">
+            <span>ℹ️</span> How It Works
+        </div>
+        <div style="color: #a0aec0; line-height: 1.8;">
+            <strong style="color: #667eea;">1.</strong> Upload your resume (PDF format)<br>
+            <strong style="color: #667eea;">2.</strong> Paste the job description<br>
+            <strong style="color: #667eea;">3.</strong> Click "Analyze Match"<br>
+            <strong style="color: #667eea;">4.</strong> Review your compatibility score and insights
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <span>⚙️</span> Technology
+        </div>
+        <div style="color: #a0aec0; line-height: 1.8;">
+            Built with:<br>
+            • TF-IDF Vectorization<br>
+            • Cosine Similarity<br>
+            • Natural Language Processing<br>
+            • Machine Learning
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% include 'analyzer/footer.html' %}

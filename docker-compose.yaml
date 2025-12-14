@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: resume_analyzer_db
+      POSTGRES_USER: waqas404
+      POSTGRES_PASSWORD: WaqasKareem@2004
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/pgdata:/var/lib/postgresql/data/
+    restart: on-failure
+
+  api:
+    build: .
+    container_name: resume_analyzer_api
+    command: sh -c "gunicorn --bind 0.0.0.0:8000 --workers=4 resume_analyzer_project.wsgi:application --reload" 
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+    restart: on-failure
