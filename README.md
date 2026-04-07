@@ -4,6 +4,9 @@ A powerful Django-based web application that uses AI and Machine Learning to ana
 
 🔗 **Live Demo:** [ai-resume-analyzer-jbuu.onrender.com](https://ai-resume-analyzer-jbuu.onrender.com)
 
+<img width="930" height="607" alt="image" src="https://github.com/user-attachments/assets/48c59584-b949-4eb5-8ad1-54fcbca14d18" />
+
+
 ## ✨ Features
 
 - **Smart Resume Matching**: Upload your resume (PDF) and paste a job description to get an instant compatibility score
